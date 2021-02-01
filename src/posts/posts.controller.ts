@@ -10,39 +10,38 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PostModel } from './posts.model';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
 export class PostsController {
   constructor(private postsService: PostsService) {}
 
-  @Get()
-  async getAllPosts(): Promise<PostModel[]> {
-    return await this.postsService.getAllPosts();
-  }
+  // @Get()
+  // async getAllPosts(): Promise<PostModel[]> {
+  //   return await this.postsService.getAllPosts();
+  // }
 
-  @Get('/:id')
-  async getPostId(@Param('id') id: string): Promise<PostModel> {
-    return await this.postsService.getPostId(id);
-  }
+  // @Get('/:id')
+  // async getPostId(@Param('id') id: string): Promise<PostModel> {
+  //   return await this.postsService.getPostId(id);
+  // }
 
-  @Post()
-  @UsePipes(ValidationPipe)
-  async createPost(@Body() createPostDto: CreatePostDto): Promise<PostModel> {
-    return await this.postsService.createPost(createPostDto);
-  }
+  // @Post()
+  // @UsePipes(ValidationPipe)
+  // async createPost(@Body() createPostDto: CreatePostDto): Promise<PostModel> {
+  //   return await this.postsService.createPost(createPostDto);
+  // }
 
-  @Patch('/:id')
-  async updatePost(
-    @Param('id') id: string,
-    @Body() createPostDto: CreatePostDto,
-  ) {
-    return await this.postsService.updatePost(id, createPostDto);
-  }
+  // @Patch('/:id')
+  // async updatePost(
+  //   @Param('id') id: string,
+  //   @Body() createPostDto: CreatePostDto,
+  // ) {
+  //   return await this.postsService.updatePost(id, createPostDto);
+  // }
 
-  @Delete('/:id')
-  async deletePost(@Param('id') id: string): Promise<void> {
-    return await this.postsService.deletePost(id);
-  }
+  // @Delete('/:id')
+  // async deletePost(@Param('id') id: string): Promise<void> {
+  //   return await this.postsService.deletePost(id);
+  // }
 }
