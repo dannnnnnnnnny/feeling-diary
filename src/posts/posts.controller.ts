@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostModel } from './posts.model';
 import { PostsService } from './posts.service';
@@ -12,8 +12,18 @@ export class PostsController {
     return await this.postsService.getAllPosts();
   }
 
+  @Get('/:id')
+  async getPostId(@Param('id') id: string): Promise<PostModel> {
+    return await this.postsService.getPostId(id);
+  }
+
   @Post()
   async createPost(@Body() createPostDto: CreatePostDto): Promise<PostModel> {
     return await this.postsService.createPost(createPostDto);
+  }
+
+  @Delete('/:id')
+  async deletePost(@Param('id') id: string): Promise<void> {
+    return await this.postsService.deletePost(id);
   }
 }

@@ -11,6 +11,10 @@ export class PostsService {
     return this.posts;
   }
 
+  getPostId(id: string): PostModel {
+    return this.posts.find((post) => post.id === id);
+  }
+
   createPost(createPostDto: CreatePostDto): PostModel {
     const { title, message } = createPostDto;
 
@@ -22,5 +26,9 @@ export class PostsService {
 
     this.posts.push(post);
     return post;
+  }
+
+  deletePost(id: string): void {
+    this.posts = this.posts.filter((post) => post.id !== id);
   }
 }
