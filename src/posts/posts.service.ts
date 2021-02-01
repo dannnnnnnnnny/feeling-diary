@@ -1,15 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { create } from 'domain';
+import { uuid } from 'uuidv4';
 import { CreatePostDto } from './dto/create-post.dto';
+import { PostModel } from './posts.model';
 
 @Injectable()
 export class PostsService {
-  getAllPosts() {
-    return;
+  private posts: PostModel[] = [];
+
+  getAllPosts(): PostModel[] {
+    return this.posts;
   }
 
-  createPost(createPostDto: CreatePostDto) {
+  createPost(createPostDto: CreatePostDto): PostModel {
     const { title, message } = createPostDto;
-    return;
+
+    const post: PostModel = {
+      id: uuid(),
+      title,
+      message,
+    };
+
+    this.posts.push(post);
+    return post;
   }
 }
