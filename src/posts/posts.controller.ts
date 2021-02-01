@@ -6,6 +6,8 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostModel } from './posts.model';
@@ -26,6 +28,7 @@ export class PostsController {
   }
 
   @Post()
+  @UsePipes(ValidationPipe)
   async createPost(@Body() createPostDto: CreatePostDto): Promise<PostModel> {
     return await this.postsService.createPost(createPostDto);
   }

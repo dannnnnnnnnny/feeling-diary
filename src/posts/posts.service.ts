@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { uuid } from 'uuidv4';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostModel } from './posts.model';
@@ -12,7 +12,11 @@ export class PostsService {
   }
 
   getPostId(id: string): PostModel {
-    return this.posts.find((post) => post.id === id);
+    const found = this.posts.find((post) => post.id === id);
+    if (!found) {
+      throw new NotFoundException(`Post With ID ${id} not found`);
+    }
+    return found;
   }
 
   createPost(createPostDto: CreatePostDto): PostModel {
@@ -44,6 +48,7 @@ export class PostsService {
   }
 
   deletePost(id: string): void {
+    this.getPostId(id);
     this.posts = this.posts.filter((post) => post.id !== id);
   }
 }
