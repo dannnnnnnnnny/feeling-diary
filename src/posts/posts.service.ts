@@ -28,6 +28,21 @@ export class PostsService {
     return post;
   }
 
+  updatePost(id: string, createPostDto: CreatePostDto) {
+    const { title, message } = createPostDto;
+
+    const post = this.getPostId(id);
+
+    if (title) {
+      post.title = title;
+    }
+    if (message) {
+      post.message = message;
+    }
+
+    return post;
+  }
+
   deletePost(id: string): void {
     this.posts = this.posts.filter((post) => post.id !== id);
   }
