@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsIn, IsNotEmpty } from 'class-validator';
+import { PostStatus } from '../post-status.enum';
 
 export class CreatePostDto {
   @IsNotEmpty()
@@ -6,6 +7,18 @@ export class CreatePostDto {
 
   @IsNotEmpty()
   message: string;
+
+  @IsNotEmpty()
+  @IsIn([
+    PostStatus.JOY,
+    PostStatus.HAPPY,
+    PostStatus.FUNNY,
+    PostStatus.ANGER,
+    PostStatus.DISGUST,
+    PostStatus.FEAR,
+    PostStatus.SAD,
+  ])
+  status: PostStatus;
 }
 
 // dto는 interface보다 class를 권장 (interface는 컴파일 후 유지X)

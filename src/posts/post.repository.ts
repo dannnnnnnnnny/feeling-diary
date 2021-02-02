@@ -7,10 +7,11 @@ import { GetPostsFilterDto } from './dto/get-filter-filter.dto';
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
   async createPost(createPostDto: CreatePostDto): Promise<Post> {
-    const { title, message } = createPostDto;
+    const { title, message, status } = createPostDto;
     const post = new Post();
     post.title = title;
     post.message = message;
+    post.status = status;
     try {
       await post.save();
     } catch (error) {

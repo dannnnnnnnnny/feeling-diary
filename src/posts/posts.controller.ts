@@ -14,6 +14,8 @@ import {
 import { Post as PostEntity } from 'src/posts/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { GetPostsFilterDto } from './dto/get-filter-filter.dto';
+import { PostStatusValidationPipe } from './pipes/post-status-validation.pipe';
+import { PostStatus } from './post-status.enum';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -43,16 +45,11 @@ export class PostsController {
     return await this.postsService.deletePost(id);
   }
 
-  // @Patch('/:id')
-  // async updatePost(
-  //   @Param('id') id: string,
-  //   @Body() createPostDto: CreatePostDto,
-  // ) {
-  //   return await this.postsService.updatePost(id, createPostDto);
-  // }
-
-  // @Delete('/:id')
-  // async deletePost(@Param('id') id: string): Promise<void> {
-  //   return await this.postsService.deletePost(id);
-  // }
+  @Patch('/:id')
+  async patchPost(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('status', PostStatusValidationPipe) status: PostStatus,
+  ): Promise<PostEntity> {
+    return await this.postsService.updatePostStatus(id, status);
+  }
 }

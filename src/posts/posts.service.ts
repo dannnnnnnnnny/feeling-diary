@@ -4,6 +4,7 @@ import { Post } from 'src/posts/post.entity';
 import { PostRepository } from 'src/posts/post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { GetPostsFilterDto } from './dto/get-filter-filter.dto';
+import { PostStatus } from './post-status.enum';
 
 @Injectable()
 export class PostsService {
@@ -17,7 +18,7 @@ export class PostsService {
   }
 
   async getPostById(id: number): Promise<Post> {
-    const found = this.postRepository.findOne(id);
+    const found = await this.postRepository.findOne({ where: { id } });
     if (!found) {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
@@ -25,7 +26,7 @@ export class PostsService {
   }
 
   async createPost(createPostDto: CreatePostDto): Promise<Post> {
-    return this.postRepository.createPost(createPostDto);
+    return await this.postRepository.createPost(createPostDto);
   }
 
   async deletePost(id: number): Promise<void> {
@@ -34,23 +35,11 @@ export class PostsService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
   }
-  // updatePost(id: string, createPostDto: CreatePostDto) {
-  //   const { title, message } = createPostDto;
 
-  //   const post = this.getPostId(id);
-
-  //   if (title) {
-  //     post.title = title;
-  //   }
-  //   if (message) {
-  //     post.message = message;
-  //   }
-
-  //   return post;
-  // }
-
-  // deletePost(id: string): void {
-  //   this.getPostId(id);
-  //   this.posts = this.posts.filter((post) => post.id !== id);
-  // }
+  async updatePostStatus(id: number, status: PostStatus): Promise<Post> {
+    const post = await this.getPostById(id);
+    post.status = status;
+    await post.save();
+    return post;
+  }
 }
