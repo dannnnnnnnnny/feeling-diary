@@ -11,8 +11,9 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Post as PostEntity } from 'src/post.entity';
+import { Post as PostEntity } from 'src/posts/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
+import { GetPostsFilterDto } from './dto/get-filter-filter.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -25,8 +26,10 @@ export class PostsController {
   }
 
   @Get()
-  getPosts(): Promise<PostEntity[]> {
-    return this.postsService.getPosts();
+  getPosts(
+    @Query(ValidationPipe) filterDto: GetPostsFilterDto,
+  ): Promise<PostEntity[]> {
+    return this.postsService.getPosts(filterDto);
   }
 
   @Post()
@@ -39,17 +42,6 @@ export class PostsController {
   async deletePost(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return await this.postsService.deletePost(id);
   }
-
-  // @Get()
-  // async getAllPosts(): Promise<PostModel[]> {
-  //   return await this.postsService.getAllPosts();
-  // }
-
-  // @Post()
-  // @UsePipes(ValidationPipe)
-  // async createPost(@Body() createPostDto: CreatePostDto): Promise<PostModel> {
-  //   return await this.postsService.createPost(createPostDto);
-  // }
 
   // @Patch('/:id')
   // async updatePost(
