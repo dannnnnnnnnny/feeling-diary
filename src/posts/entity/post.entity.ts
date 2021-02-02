@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { PostStatus } from './post-status.enum';
+import { PostStatus } from '../post-status.enum';
 
 @Entity()
 export class Post extends BaseEntity {

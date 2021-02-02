@@ -1,4 +1,4 @@
-import { IsIn, IsNotEmpty } from 'class-validator';
+import { IsIn, IsNotEmpty, IsString } from 'class-validator';
 import { PostStatus } from '../post-status.enum';
 
 export class CreatePostDto {

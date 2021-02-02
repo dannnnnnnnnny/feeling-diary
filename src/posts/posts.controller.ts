@@ -11,7 +11,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Post as PostEntity } from 'src/posts/post.entity';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Post as PostEntity } from 'src/posts/entity/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { GetPostsFilterDto } from './dto/get-filter-filter.dto';
 import { PostStatusValidationPipe } from './pipes/post-status-validation.pipe';
@@ -23,8 +24,8 @@ export class PostsController {
   constructor(private postsService: PostsService) {}
 
   @Get('/:id')
-  async getPostId(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
-    return await this.postsService.getPostById(id);
+  getPostId(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
+    return this.postsService.getPostById(id);
   }
 
   @Get()
@@ -36,20 +37,20 @@ export class PostsController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  async createPost(@Body() createPostDto: CreatePostDto): Promise<PostEntity> {
-    return await this.postsService.createPost(createPostDto);
+  createPost(@Body() createPostDto: CreatePostDto): Promise<PostEntity> {
+    return this.postsService.createPost(createPostDto);
   }
 
   @Delete('/:id')
-  async deletePost(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return await this.postsService.deletePost(id);
+  deletePost(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.postsService.deletePost(id);
   }
 
   @Patch('/:id')
-  async patchPost(
+  patchPost(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', PostStatusValidationPipe) status: PostStatus,
   ): Promise<PostEntity> {
-    return await this.postsService.updatePostStatus(id, status);
+    return this.postsService.updatePostStatus(id, status);
   }
 }
