@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
+import * as bcrpyt from 'bcryptjs';
 
 @Entity()
 @Unique(['username'])
@@ -23,4 +24,8 @@ export class User extends BaseEntity {
 
   @Column()
   salt: string;
+
+  async validatePassword(password: string): Promise<boolean> {
+    return await bcrpyt.hash(password, this.salt);
+  }
 }
