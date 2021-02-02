@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { SignUpDto } from './dto/signup.dto';
@@ -16,6 +16,10 @@ export class AuthService {
   }
 
   async signIn(authCredentialsDto: AuthCredentialsDto): Promise<string> {
-    return await this.userRepository.signIn(authCredentialsDto);
+    const username = await this.userRepository.signIn(authCredentialsDto);
+    if (!username) {
+      throw new UnauthorizedException('유효하지 않은 인증입니다.');
+    }
+    return username;
   }
 }
