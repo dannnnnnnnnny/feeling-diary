@@ -8,9 +8,11 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Post as PostEntity } from 'src/posts/entity/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -20,6 +22,7 @@ import { PostStatus } from './post-status.enum';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
+@UseGuards(AuthGuard())
 export class PostsController {
   constructor(private postsService: PostsService) {}
 
