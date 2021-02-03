@@ -3,26 +3,31 @@ import { EntityRepository, Repository } from 'typeorm';
 import { Post } from './entity/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { GetPostsFilterDto } from './dto/get-filter-filter.dto';
+import { User } from 'src/auth/entity/user.entity';
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
-  async createPost(createPostDto: CreatePostDto): Promise<Post> {
+  async createPost(createPostDto: CreatePostDto, user: User): Promise<Post> {
     const { title, message, status } = createPostDto;
     const post = new Post();
     post.title = title;
     post.message = message;
     post.status = status;
+    post.user = user;
     try {
       await post.save();
+      delete post.user;
     } catch (error) {
       throw new InternalServerErrorException('Server Error');
     }
     return post;
   }
 
-  async getPosts(filterDto: GetPostsFilterDto): Promise<Post[]> {
+  async getPosts(filterDto: GetPostsFilterDto, user: User): Promise<Post[]> {
     const { status, search } = filterDto;
     const query = this.createQueryBuilder('post');
+
+    query.where('post.userId = :userId', { userId: user.id });
 
     if (status) {
       query.andWhere('post.status = :status', { status });
