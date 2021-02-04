@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -27,6 +28,7 @@ import { PostsService } from './posts.service';
 @Controller('posts')
 @UseGuards(AuthGuard())
 export class PostsController {
+  private logger = new Logger('PostController');
   constructor(private postsService: PostsService) {}
 
   @Get('/:id')
@@ -34,6 +36,7 @@ export class PostsController {
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
   ): Promise<PostEntity> {
+    this.logger.verbose(`Searching for ${user.username}'s post ${id}}`);
     return this.postsService.getPostById(id, user);
   }
 
@@ -42,6 +45,11 @@ export class PostsController {
     @Query(ValidationPipe) filterDto: GetPostsFilterDto,
     @GetUser() user: User,
   ): Promise<PostEntity[]> {
+    this.logger.verbose(
+      `Retrieving all of ${user.username}'s posts. [Filter] : ${JSON.stringify(
+        filterDto,
+      )}`,
+    );
     return this.postsService.getPosts(filterDto, user);
   }
 
@@ -51,6 +59,7 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
     @GetUser() user: User,
   ): Promise<PostEntity> {
+    this.logger.verbose(`Creating for ${user.username}'s post`);
     return this.postsService.createPost(createPostDto, user);
   }
 
@@ -59,6 +68,7 @@ export class PostsController {
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
   ): Promise<void> {
+    this.logger.verbose(`Deleting for ${user.username}'s post`);
     return this.postsService.deletePost(id, user);
   }
 
@@ -68,6 +78,7 @@ export class PostsController {
     @Body('status', PostStatusValidationPipe) status: PostStatus,
     @GetUser() user: User,
   ): Promise<PostEntity> {
+    this.logger.verbose(`Patching for ${user.username}'s post`);
     return this.postsService.updatePostStatus(id, status, user);
   }
 }
