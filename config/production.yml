@@ -1,0 +1,11 @@
+server:
+  origin:
+
+db:
+  host: 'localhost'
+  username: 'webprojUser'
+  password: 'webprojUser'
+  synchronize: false
+
+jwt:
+  secret: 'secretKey'
