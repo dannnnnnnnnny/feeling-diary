@@ -12,17 +12,17 @@ import { SignUpDto } from './dto/signup.dto';
 export class UserRepository extends Repository<User> {
   // 회원가입
   async signUp(signUpDto: SignUpDto): Promise<void> {
-    const { username, password, nickname } = signUpDto;
+    const { username, password } = signUpDto;
 
     const user = new User();
     user.username = username;
-    user.nickname = nickname;
     user.salt = await bcrypt.genSalt(); // $2b$10$RiXWjJNwOEaKD5UhatiEne 같은 암호
     user.password = await this.hashPassword(password, user.salt);
 
     try {
       await user.save();
     } catch (error) {
+      console.error("Error : ", error);
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('Username already exists.');
       } else {

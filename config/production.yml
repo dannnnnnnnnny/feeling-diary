@@ -1,5 +1,5 @@
 server:
-  origin:
+  origin: http://nestjs-feeling-diary-frontend.s3-website-us-west-1.amazonaws.com
 
 db:
   host: 'localhost'

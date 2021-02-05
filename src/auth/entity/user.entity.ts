@@ -22,9 +22,6 @@ export class User extends BaseEntity {
   password: string;
 
   @Column()
-  nickname: string;
-
-  @Column()
   salt: string;
 
   @OneToMany((type) => Post, (post) => post.user, { eager: true })
